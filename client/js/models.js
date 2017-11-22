@@ -111,13 +111,13 @@ function squareHasPawn(square, side) {
   return square.occupancy.side === side;
 }
 
-module.exports = {
-  renderBoard,
-  Square,
-  initializeGame,
-  Pawn,
-  squareIsEmpty,
-  rowIsOneAway,
-  colIsOneAway,
-  squareHasPawn
-};
+// module.exports = {
+//   renderBoard,
+//   Square,
+//   initializeGame,
+//   Pawn,
+//   squareIsEmpty,
+//   rowIsOneAway,
+//   colIsOneAway,
+//   squareHasPawn
+// };
