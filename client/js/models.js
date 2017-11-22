@@ -68,28 +68,47 @@ class Pawn {
    */
   advance(currentSquare, desiredSquare, board) {
     if (
-      spaceIsEmpty(desiredSquare) &&
-      positionIsOneAway(currentSquare, desiredSquare, this.side)
+      squareIsEmpty(desiredSquare) &&
+      rowIsOneAway(currentSquare, desiredSquare, this.side)
     ) {
       currentSquare.occupancy = null;
       desiredSquare.occupancy = this;
-      this.position(desiredSquare.row, desiredSquare.col, this.side);
+      this.position = [desiredSquare.row, desiredSquare.col];
     }
   }
 
-  capture(currentSquare, desiredSquare, board) {}
+  capture(currentSquare, desiredSquare, board) {
+    const opposition = this.side === "white" ? "black" : "white";
+    if (
+      rowIsOneAway(currentSquare, desiredSquare, this.side) &&
+      colIsOneAway(currentSquare, desiredSquare) &&
+      squareHasPawn(desiredSquare, opposition)
+    ) {
+      currentSquare.occupancy = null;
+      desiredSquare.occupancy = this;
+      this.position = [desiredSquare.row, desiredSquare.col];
+    }
+  }
 
   queen(position) {}
 }
 
-function spaceIsEmpty(square) {
+function squareIsEmpty(square) {
   return square.occupancy === null;
 }
 
-function positionIsOneAway(current, desired, side) {
+function rowIsOneAway(current, desired, side) {
   if (side === "white") return current.row === desired.row + 1;
   else if (side === "black") return current.row === desired.row - 1;
   else throw new Error("invalid side was provided ", side);
+}
+
+function colIsOneAway(current, desired) {
+  return current.col === desired.col + 1 || current.col === desired.col - 1;
+}
+
+function squareHasPawn(square, side) {
+  return square.occupancy.side === side;
 }
 
 module.exports = {
@@ -97,6 +116,8 @@ module.exports = {
   Square,
   initializeGame,
   Pawn,
-  spaceIsEmpty,
-  positionIsOneAway
+  squareIsEmpty,
+  rowIsOneAway,
+  colIsOneAway,
+  squareHasPawn
 };
